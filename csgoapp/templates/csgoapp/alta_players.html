@@ -1,0 +1,53 @@
+{% extends 'csgoapp/index.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<form align="center" action="alta_player" method="POST">
+    {% csrf_token %}
+    <p>Ingresar un player: </p>
+    <br>
+    <p>Nombre: </p>
+    <input type="text" name="nombre">
+    <br>
+    <br>
+    <p>Equipo: </p>
+    <input type="text" name="team">
+
+    <br>
+    <br>
+    <input type="submit" value="Enviar">
+</form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+{% endblock %}

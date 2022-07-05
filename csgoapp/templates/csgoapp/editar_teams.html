@@ -26,13 +26,26 @@
     <title>Document</title>
 </head>
 <body>
-<form action="{% url 'editar_teams' team.id %}" method="POST">
+
+<form  align ="center" action="{% url 'editar_teams' team.id %}" method="POST">
     {% csrf_token %}
     <p>Nombre: </p>
     <input type="text" name="nombre" required>
+    <br>
     <p>Region: </p>
     <input type="text" name="region" required>
+    <br>
+    <br>
+    <br>
   <input type="submit" name="Enviar">
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
 </form>    
 </body>
 

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from csgoapp.models import Teams,Players,Tournaments
 from csgoapp.forms import TeamForm,PlayerForm,TournamentForm
 from django.shortcuts import render , get_object_or_404 , redirect
-from . models import Teams
+from . models import Teams, Players
 
 # Create your views here.
 
@@ -25,10 +25,18 @@ def teams(request):
     return render (request, "csgoapp/teams.html", dic)
 
 def tournaments(request):
-    return render (request, "csgoapp/tournaments.html")
+    tournaments = Tournaments.objects.all()
+    diccionario2 = {
+        'tournaments' : tournaments
+    }
+    return render (request, "csgoapp/tournaments.html", diccionario2)
 
 def players(request):
-    return render (request, "csgoapp/players.html")
+    players = Players.objects.all()
+    diccionario = {
+        'players' : players
+    }
+    return render (request, "csgoapp/players.html", diccionario)
 
 def login_request(request):
     
@@ -79,15 +87,6 @@ def logout(request):
     logout(request)
     return redirect('csgoapp/logout.html')
 
-def alta_player(request):
-    if request.method == "POST":
-        mi_form = PlayerForm(request.POST)
-        if mi_form.is_valid():
-            datos = mi_form.cleaned_data
-            player = Players(nombre = datos["nombre"], team = datos["team"])
-            player.save()
-        return render(request, "csgoapp/players.html") 
-    return render(request, "csgoapp/players.html")
 
 def buscar_player(request):
     if request.method == 'GET':
@@ -99,15 +98,8 @@ def buscar_player(request):
         print('Nada para mostrar')
         return request(request, 'csgoapp/players.html', {})
 
-def eliminar_player(request, id):
-    player = Players.objects.get(id=id)
-    player.delete()
 
-    players = Players.objects.all()
-    
-    return render(request, "csgoapp/players.html", {"players":players})
-
-
+@login_required
 def alta_team(request):
     if request.method == "POST":
         mi_form = TeamForm(request.POST)
@@ -117,6 +109,28 @@ def alta_team(request):
             team.save()
             return redirect("teams.html")
     return render(request, "csgoapp/alta_team.html")
+
+@login_required
+def alta_tournament(request):
+    if request.method == "POST":
+        mi_form = TournamentForm(request.POST)
+        if mi_form.is_valid():
+            datos = mi_form.cleaned_data
+            tournament = Tournaments(nombre = datos["nombre"], region = datos["region"])
+            tournament.save()
+        return redirect("tournaments.html")
+    return render(request, "csgoapp/alta_tournaments.html")
+
+@login_required
+def alta_player(request):
+    if request.method == "POST":
+        mi_form = PlayerForm(request.POST)
+        if mi_form.is_valid():
+            datos = mi_form.cleaned_data
+            player = Players(nombre = datos["nombre"], team = datos["team"])
+            player.save()
+        return redirect("players.html")
+    return render(request, "csgoapp/alta_players.html")
 
 """
 def buscar_team(request):
@@ -129,7 +143,7 @@ def buscar_team(request):
         print('Nada para mostrar')
         return request(request, 'csgoapp/teams.html', {})
 """
-
+@login_required
 def eliminar_team(request, id):
     team = get_object_or_404(Teams , pk = id)
 
@@ -138,27 +152,7 @@ def eliminar_team(request, id):
 
     return redirect('teams.html')
 
-
-def alta_tournament(request):
-    if request.method == "POST":
-        mi_form = TournamentForm(request.POST)
-        if mi_form.is_valid():
-            datos = mi_form.cleaned_data
-            tournament = Tournaments(nombre = datos["nombre"], region = datos["region"])
-            tournament.save()
-        return render(request, "csgoapp/tournaments.html") 
-    return render(request, "csgoapp/tournaments.html")
-
-def buscar_tournament(request):
-    if request.method == 'GET':
-        nombre = request.GET.get('nombre')
-    if nombre:
-        tournaments = Tournaments.objects.filter(nombre__icontains=nombre)
-        return render(request, 'csgoapp/tournaments.html', {'tournaments': tournaments})
-    else:
-        print('Nada para mostrar')
-        return request(request, 'csgoapp/tournaments.html', {})
-
+@login_required
 def eliminar_tournament(request, id):
     tournament = Tournaments.objects.get(id=id)
     tournament.delete()
@@ -167,21 +161,15 @@ def eliminar_tournament(request, id):
     
     return render(request, "csgoapp/tournaments.html", {"tournaments":tournaments})
 
-"""
-def editar_team(request, id):
-    team = get_object_or_404(Teams , pk = id)
+@login_required
+def eliminar_player(request, id):
+    player = get_object_or_404(Players , pk = id)
 
-    if request.method == "POST":
-        mi_formulario = TeamForm(request.POST)
-        if mi_formulario.is_valid():
-            mi_formulario.save()
-            return redirect('teams.html')
+    if player :
+        player.delete()
 
-    else:
-        mi_formulario = TeamForm()
-    
-    return render (request, "csgoapp/editar_team.html", {"mi_formulario": mi_formulario})
-"""
+    return redirect('players.html')
+
 
 def editar_teams(request,id):
     team = Teams.objects.get(id=id)
@@ -200,15 +188,25 @@ def editar_teams(request,id):
     return render(request, "csgoapp/editar_teams.html", {'miform':miform , 'team':team})
     
    
+def detalles_tournaments(request , id) :
+    #teams = get_object_or_404(Teams , pk = id)
+    tournaments = Tournaments.objects.filter(id=id)
 
+    return render(request, "csgoapp/detalles_tournaments.html", {"tournaments": tournaments})
         
         
-
 def detalles_teams(request , id) :
     #teams = get_object_or_404(Teams , pk = id)
     teams = Teams.objects.filter(id=id)
 
     return render(request, "csgoapp/detalles_teams.html", {"teams": teams})
+
+def detalles_players(request , id) :
+    #teams = get_object_or_404(Teams , pk = id)
+    players = Players.objects.filter(id=id)
+
+    return render(request, "csgoapp/detalles_players.html", {"players": players})
+
 
 """
 def eliminar_player(request, id):
@@ -218,6 +216,16 @@ def eliminar_player(request, id):
     players = Players.objects.all()
     
     return render(request, "csgoapp/players.html", {"players":players})
+
+def buscar_tournament(request):
+    if request.method == 'GET':
+        nombre = request.GET.get('nombre')
+    if nombre:
+        tournaments = Tournaments.objects.filter(nombre__icontains=nombre)
+        return render(request, 'csgoapp/tournaments.html', {'tournaments': tournaments})
+    else:
+        print('Nada para mostrar')
+        return request(request, 'csgoapp/tournaments.html', {})
 """
      
 
@@ -243,5 +251,19 @@ def editarPerfil(request):
         miFormulario = UserEditForm(initial={'usuario': usuario.usuario})
     
     return render(request, "csgoapp/editarPerfil.html", {"miFormulario": miFormulario, "usuario": usuario})
+
+def editar_team(request, id):
+    team = get_object_or_404(Teams , pk = id)
+
+    if request.method == "POST":
+        mi_formulario = TeamForm(request.POST)
+        if mi_formulario.is_valid():
+            mi_formulario.save()
+            return redirect('teams.html')
+
+    else:
+        mi_formulario = TeamForm()
+    
+    return render (request, "csgoapp/editar_team.html", {"mi_formulario": mi_formulario})
 
 """

@@ -3,10 +3,6 @@
 {% load static %}
 
 {% block content %}
-
-
-<br>
-<br>
 <br>
 <br>
 <br>
@@ -17,86 +13,38 @@
 <br>
 <br>
 
+<div class="container">
 
-  
- 
+  <a href="alta_tournaments.html" class="btn btn-outline-dark mt-5">Crear Nuevo</a>
 
-<form align="center" action="alta_tournament" method="POST">
-    {% csrf_token %}
-    <p>Ingresar un torneo: </p>
-    <br>
-    <p>Nombre: </p>
-    <input type="text" name="nombre">
-    <br>
-    <br>
-    <p>Region: </p>
-    <input type="text" name="region">
+  <table class="table table-bordered table-info mt-5 text-center">
+  <thead>
+      <tr>
+      <th>Id</th>
+      <th>Torneo</th>
+      <th>Región</th>
 
-    <br>
-    <br>
-    <input type="submit" value="Enviar">
-<br>
-<br>
-</form>
+      </tr>
+  </thead>
+  <tbody>
+      {% for tournament in tournaments %}
+          <tr>
+              <th>{{ tournament.id }}</th>
+              <td>{{ tournament.nombre }}</td>
+              <td>{{ tournament.region }}</td>
+              <td>
+                  <a href="detalles_tournaments_{{ tournament.id }}"class="btn btn-danger">Ver mas</a>
+                  <a href="#" class="btn btn-success">Editar</a>
+                  <a href="eliminar_tournament_{{ tournament.id }}" class="btn btn-primary">Eliminar</a>
+              </td>
+          </tr>
+      {% endfor %}
+  </tbody>
+  </table>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
-<form align="center" action="buscar_tournament" method="GET">
-    <p>Nombre del torneo a buscar:</p>
-    <input type="text" name="nombre" id="nombre">
-    <input type="submit" value="Buscar">
-</form> 
-
-<p align="center">
-    {% if tournaments %}
-    <ul>
-    {% for tournament in tournaments %}
-    <li align="center" list-style-type = 'none'>id: {{tournament.id}}</li>
-    <li align="center" list-style-type = 'none'>Nombre: {{tournament.nombre}}</li>
-    <li align="center" list-style-type = 'none'>Team: {{tournament.team}}</li>
-    {% endfor %}
-    {% else %}
-    <p align="center">No se encontraron torneos</p>
-    </ul>
-    {% endif %}
-</p>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
-<div class="caterlitosh" align="center">
- <p>Borrar tournaments</p>
-
- {% for t in tournaments %} 
- <li>{{t.nombre}}</li>
- <br>
- <button>
-    <a href="{% url 'eliminar_tournament' t.id %}">Eliminar</a>
- </button>
- {% endfor %}
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 <br>
 <br>

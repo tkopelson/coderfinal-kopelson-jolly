@@ -1,0 +1,51 @@
+{% extends 'csgoapp/index.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<form align="center" action="alta_tournament" method="POST">
+    {% csrf_token %}
+    <p>Ingresar un torneo: </p>
+    <br>
+    <p>Nombre: </p>
+    <input type="text" name="nombre">
+    <br>
+    <br>
+    <p>Region: </p>
+    <input type="text" name="region">
+
+    <br>
+    <br>
+    <input type="submit" value="Enviar">
+</form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'csgoapp/index.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div align="center">
+    {% for player in players %}
+
+         <p>Nombre : {{ player.nombre }}</p>
+         <p>Region : {{ player.team }} </p>
+    
+    {% endfor %}
+
+        <a class="btn btn-outline-secondary" href="players.html">Regresar atras</a>
+ </div>
+<br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+{% endblock %}

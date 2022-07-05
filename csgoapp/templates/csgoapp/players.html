@@ -5,38 +5,10 @@
 {% block content %}
 
 
-
 <br>
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
-
-
-  
- 
-
-<form align="center" action="alta_player" method="POST">
-    {% csrf_token %}
-    <p>Ingresar un jugador: </p>
-    <br>
-    <p>Nombre: </p>
-    <input type="text" name="nombre">
-    <br>
-    <br>
-    <p>Team: </p>
-    <input type="text" name="team">
-
-    <br>
-    <br>
-    <input type="submit" value="Enviar">
-<br>
-<br>
-</form>
-
 <br>
 <br>
 <br>
@@ -46,42 +18,36 @@
 <br>
 <br>
 
-<form align="center" action="buscar_player" method="GET">
-    <p>Nombre del jugador a buscar:</p>
-    <input type="text" name="nombre" id="nombre">
-    <input type="submit" value="Buscar">
-</form> 
+<div class="container">
 
-<p align="center">
-    {% if players %}
-    <ul>
-    {% for player in players %}
-    <li align="center" list-style-type = 'none'>id: {{player.id}}</li>
-    <li align="center" list-style-type = 'none'>Nombre: {{player.nombre}}</li>
-    <li align="center" list-style-type = 'none'>Team: {{player.team}}</li>
-    {% endfor %}
-    {% else %}
-    <p align="center">No se encontraron jugadores</p>
-    </ul>
-    {% endif %}
-</p>
+  <a href="alta_players.html" class="btn btn-outline-dark mt-5">Crear Nuevo</a>
 
-<br>
-<br>
-<br>
-<br>
-<br>
+  <table class="table table-bordered table-info mt-5 text-center">
+  <thead>
+      <tr>
+      <th>Id</th>
+      <th>Nombre</th>
+      <th>Equipo</th>
 
-<div class="caterlitosh" align="center">
- <p>Borrar jugadores</p>
+      </tr>
+  </thead>
+  <tbody>
+      {% for player in players %}
+          <tr>
+              <th>{{ player.id }}</th>
+              <td>{{ player.nombre }}</td>
+              <td>{{ player.team }}</td>
+              <td>
+                  <a href="detalles_players_{{ player.id }}"class="btn btn-danger">Ver mas</a>
+                  <a href="#" class="btn btn-success">Editar</a>
+                  <a href="eliminar_player_{{ player.id }}" class="btn btn-primary">Eliminar</a>
+              </td>
+          </tr>
+      {% endfor %}
+  </tbody>
+  </table>
 
- {% for p in players %} 
- <li>{{p.nombre}}</li>
- <br>
- <button>
-    <a href="{% url 'eliminar_player' p.id %}">Eliminar</a>
- </button>
- {% endfor %}
+
 </div>
 
 <br>
@@ -89,13 +55,5 @@
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 {% endblock %}
