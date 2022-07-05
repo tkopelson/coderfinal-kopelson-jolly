@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'csgoapp/index.html' %}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in</title>
+</head>
+{% block content %}
+
+<body>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h1 align="center">Registrate</h1>
+<br>
+<form action="" method="POST" align="center">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <button type="submit">Registrarse</button>
+</form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</body>
+{% endblock %}
+</html>
+<body>

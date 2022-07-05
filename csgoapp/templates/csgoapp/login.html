@@ -1,0 +1,44 @@
+{% extends 'csgoapp/index.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h1 align="center">Inicia sesión</h1>
+    <br>
+    <form action="" method="POST" align="center">
+        {% csrf_token %}
+        {{ form.as_p}}
+        <button type="submit">Iniciar sesión</button>
+        <br>
+        <br>
+        <a href="registro.html">¿No tienes cuenta? Registrate aquí</a>
+    </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</body>
+{% endblock %}
+</html>

@@ -1,0 +1,106 @@
+{% extends 'csgoapp/index.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+  
+ 
+
+<form align="center" action="alta_tournament" method="POST">
+    {% csrf_token %}
+    <p>Ingresar un torneo: </p>
+    <br>
+    <p>Nombre: </p>
+    <input type="text" name="nombre">
+    <br>
+    <br>
+    <p>Region: </p>
+    <input type="text" name="region">
+
+    <br>
+    <br>
+    <input type="submit" value="Enviar">
+<br>
+<br>
+</form>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<form align="center" action="buscar_tournament" method="GET">
+    <p>Nombre del torneo a buscar:</p>
+    <input type="text" name="nombre" id="nombre">
+    <input type="submit" value="Buscar">
+</form> 
+
+<p align="center">
+    {% if tournaments %}
+    <ul>
+    {% for tournament in tournaments %}
+    <li align="center" list-style-type = 'none'>id: {{tournament.id}}</li>
+    <li align="center" list-style-type = 'none'>Nombre: {{tournament.nombre}}</li>
+    <li align="center" list-style-type = 'none'>Team: {{tournament.team}}</li>
+    {% endfor %}
+    {% else %}
+    <p align="center">No se encontraron torneos</p>
+    </ul>
+    {% endif %}
+</p>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="caterlitosh" align="center">
+ <p>Borrar tournaments</p>
+
+ {% for t in tournaments %} 
+ <li>{{t.nombre}}</li>
+ <br>
+ <button>
+    <a href="{% url 'eliminar_tournament' t.id %}">Eliminar</a>
+ </button>
+ {% endfor %}
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+{% endblock %}
