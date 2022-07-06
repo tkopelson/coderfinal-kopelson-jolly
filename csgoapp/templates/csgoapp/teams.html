@@ -33,9 +33,16 @@
               <td>{{ team.nombre }}</td>
               <td>{{ team.region }}</td>
               <td>
+                {% if user.is_authenticated %}
                   <a href="detalles_teams_{{ team.id }}"class="btn btn-danger">Ver mas</a>
-                  <a href="editar_teams/{{team.id}}" class="btn btn-success">Editar</a>
+                  <a href="editar_teams_{{ team.id }}" class="btn btn-success">Editar</a>
                   <a href="eliminar_team_{{ team.id }}" class="btn btn-primary">Eliminar</a>
+                
+                {% else %}
+                  <a class="btn btn-danger">Ver mas</a>
+                  <a class="btn btn-success">Editar</a>
+                  <a class="btn btn-primary">Eliminar</a>
+                {% endif %}
               </td>
           </tr>
       {% endfor %}

@@ -27,11 +27,10 @@
 </head>
 <body>
 
-<form  align ="center" action="{% url 'editar_teams' team.id %}" method="POST">
+<form  align ="center" action="{% url 'editar_tournaments' tournament.id %}" method="POST">
     {% csrf_token %}
     <p>Nombre: </p>
     <input type="text" name="nombre" required>
-    <br>
     <br>
     <p>Region: </p>
     <input type="text" name="region" required>
@@ -47,7 +46,7 @@
   <br>
   <br>
   <br>
-</form>    
+</form>
 </body>
 
 </html>

@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from csgoapp.models import Teams,Players,Tournaments
-from csgoapp.forms import TeamForm,PlayerForm,TournamentForm
+from csgoapp.forms import TeamForm,PlayerForm,TournamentForm, UserEditForm
 from django.shortcuts import render , get_object_or_404 , redirect
 from . models import Teams, Players
 
@@ -132,17 +132,22 @@ def alta_player(request):
         return redirect("players.html")
     return render(request, "csgoapp/alta_players.html")
 
-"""
-def buscar_team(request):
-    if request.method == 'GET':
-        nombre = request.GET.get('nombre')
-    if nombre:
-        teams = Teams.objects.filter(nombre__icontains=nombre)
-        return render(request, 'csgoapp/teams.html', {'teams': teams})
+def editar_teams(request,id):
+    team = Teams.objects.get(id=id)
+    
+    if request.method == 'POST':
+        miform = TeamForm(request.POST)
+        if miform.is_valid():
+            datos = miform.cleaned_data
+            team.nombre = datos['nombre']
+            team.region = datos['region']
+            team.save()
+            return redirect('/')
     else:
-        print('Nada para mostrar')
-        return request(request, 'csgoapp/teams.html', {})
-"""
+        miform = TeamForm(initial={'nombre': team.nombre, 'region': team.region})
+
+    return render(request, "csgoapp/editar_teams.html", {'miform':miform , 'team':team})
+
 @login_required
 def eliminar_team(request, id):
     team = get_object_or_404(Teams , pk = id)
@@ -169,23 +174,6 @@ def eliminar_player(request, id):
         player.delete()
 
     return redirect('players.html')
-
-
-def editar_teams(request,id):
-    team = Teams.objects.get(id=id)
-    
-    if request.method == 'POST':
-        miform = TeamForm(request.POST)
-        if miform.is_valid():
-            datos = miform.cleaned_data
-            team.nombre = datos['nombre']
-            team.region = datos['region']
-            team.save()
-            return redirect('/')
-    else:
-        miform = TeamForm(initial={'nombre': team.nombre, 'region': team.region})
-
-    return render(request, "csgoapp/editar_teams.html", {'miform':miform , 'team':team})
     
    
 def detalles_tournaments(request , id) :
@@ -208,62 +196,61 @@ def detalles_players(request , id) :
     return render(request, "csgoapp/detalles_players.html", {"players": players})
 
 
-"""
-def eliminar_player(request, id):
-    player = Players.objects.get(id=id)
-    player.delete()
-
-    players = Players.objects.all()
-    
-    return render(request, "csgoapp/players.html", {"players":players})
-
-def buscar_tournament(request):
-    if request.method == 'GET':
-        nombre = request.GET.get('nombre')
-    if nombre:
-        tournaments = Tournaments.objects.filter(nombre__icontains=nombre)
-        return render(request, 'csgoapp/tournaments.html', {'tournaments': tournaments})
-    else:
-        print('Nada para mostrar')
-        return request(request, 'csgoapp/tournaments.html', {})
-"""
-     
-
-"""
 @login_required
 def editarPerfil(request):
 
     usuario = request.user
 
     if request.method == 'POST':
+
         miFormulario = UserEditForm(request.POST)
-        if miFormulario.is_valid:
+
+        if miFormulario.is_valid():
 
             informacion = miFormulario.cleaned_data
 
-            usuario.usuario = informacion['usuario']
-            usuario.password1 = informacion ['password1']
-            usuario.password2 = informacion ['password1']
+            usuario.email = informacion['email']
+            password = informacion ['password1']
+            usuario.set_password(password)
             usuario.save()
 
-            return render (request, "csgoapp/inicio.html")
+            return redirect('/')
     else:
-        miFormulario = UserEditForm(initial={'usuario': usuario.usuario})
+        miFormulario = UserEditForm(initial={'email': usuario.email})
     
-    return render(request, "csgoapp/editarPerfil.html", {"miFormulario": miFormulario, "usuario": usuario})
+    return render(request, "csgoapp/editarPerfil.html", {"miFormulario": miFormulario, "usuario":usuario})
 
-def editar_team(request, id):
-    team = get_object_or_404(Teams , pk = id)
 
-    if request.method == "POST":
-        mi_formulario = TeamForm(request.POST)
-        if mi_formulario.is_valid():
-            mi_formulario.save()
-            return redirect('teams.html')
+@login_required
+def editar_players(request,id):
+    player = Players.objects.get(id=id)
 
+    if request.method == 'POST':
+        miform = PlayerForm(request.POST)
+        if miform.is_valid():
+            datos = miform.cleaned_data
+            player.nombre = datos['nombre']
+            player.team = datos['team']
+            player.save()
+            return redirect('/')
     else:
-        mi_formulario = TeamForm()
-    
-    return render (request, "csgoapp/editar_team.html", {"mi_formulario": mi_formulario})
+        miform = PlayerForm(initial={'nombre': player.nombre, 'team': player.team})
 
-"""
+    return render(request, "csgoapp/editar_players.html", {'miform':miform , 'player':player})
+
+@login_required
+def editar_tournaments(request,id):
+    tournament = Tournaments.objects.get(id=id)
+
+    if request.method == 'POST':
+        miform = TournamentForm(request.POST)
+        if miform.is_valid():
+            datos = miform.cleaned_data
+            tournament.nombre = datos['nombre']
+            tournament.region = datos['region']
+            tournament.save()
+            return redirect('/')
+    else:
+        miform = TournamentForm(initial={'nombre': tournament.nombre, 'region': tournament.region})
+
+    return render(request, "csgoapp/editar_tournaments.html", {'miform':miform , 'tournament':tournament})

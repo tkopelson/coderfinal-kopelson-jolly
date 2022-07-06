@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from csgoapp import views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,16 +40,16 @@ urlpatterns = [
     path('eliminar_team_<int:id>', views.eliminar_team , name='eliminar_team'),
     path('alta_tournament', views.alta_tournament, name='alta_tournament'),
     path('alta_tournaments.html', views.alta_tournament, name='alta_tournament'),
-    #path('buscar_tournament', views.buscar_tournament, name='buscar_tournament'),
     path('eliminar_tournament_<int:id>', views.eliminar_tournament , name='eliminar_tournament'),
-    path('editar_teams/<int:id>/', views.editar_teams, name='editar_teams'),
-
     path('detalles_teams_<int:id>', views.detalles_teams, name='detalles_teams'),
     path('detalles_players_<int:id>', views.detalles_players, name='detalles_players'),
     path('detalles_tournaments_<int:id>', views.detalles_tournaments, name='detalles_tournaments'),
-    #path('buscar_player', views.buscar_player, name='buscar_player'),
-
-    #path('editar_player/', views.editar_player, name='editar_player'),
-    #path('editarPerfil', views.editarPerfil, name="EditarPerfil"),
-    #path('editar_team', views.editar_teams, name='editar_team'),
+    path('editarPerfil', views.editarPerfil, name="editarPerfil"),
+    path('editarperfil.html', views.editarPerfil, name="editarPerfil"),
+    path('editar_player/<int:id>/', views.editar_players, name='editar_players'),
+    path('editar_tournaments/<int:id>/', views.editar_tournaments, name='editar_tournaments'),
+    path('editar_teams_<int:id>/', views.editar_teams, name='editar_teams'),
 ]
+
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
